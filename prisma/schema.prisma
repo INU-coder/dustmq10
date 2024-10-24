@@ -1,14 +1,85 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model user {
+  userId      Int        @id @default(autoincrement())
+  account     String     @unique
+  name        String
+  password    String
+  cash        Int        @default(0)
+  inventory   Inventory[] 
+  players     player[]   // 유저가 여러 플레이어를 가질 수 있음
+  createdAt   DateTime   @default(now())
+
+  @@map("users")
+}
+
+model Inventory {
+  inventoryId Int    @id @default(autoincrement())
+  userId      Int   
+  item        item?   @relation(fields: [itemId], references: [id])
+  itemId      Int
+  user        user   @relation(fields: [userId], references: [userId])
+
+  @@map("inventories")
+}
+
+model player {
+  playerId       Int       @id @default(autoincrement())
+  user           user      @relation(fields: [userId], references: [userId])
+  userId         Int
+  character      Character @relation(fields: [characterId], references: [id])
+  characterId    Int
+  level          Int       @default(1)  // 각 플레이어의 레벨
+  exp            Int       @default(0)  // 각 플레이어의 경험치
+  equippedItemId Int?      
+  equippedItem   item?     @relation(fields: [equippedItemId], references: [id])  // 장착된 아이템
+
+  @@map("players")
+}
+
+model Character {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  health     Int
+  power      Int
+  defence    Int
+  speed      Int
+  players    player[] // 캐릭터와 여러 플레이어 관계
+
+  @@map("characters")
+}
+
+model item {
+  id              Int      @id @default(autoincrement())
+  name            String
+  type            String   // 검, 활, 지팡이, 방패 등
+  power           Int
+  defence         Int
+  speed           Int
+  knockBack       Int
+  rank            String
+  inventory       Inventory[]
+  equippedPlayers player[]
+
+  @@map("items")
+}
+
+// model pack {
+//   packId Int    @id @default(autoincrement()) @map("pack_id")
+//   name   String @map("name")
+//   price  Int    @map("price")
+//   APB    Int    @map("APB") // 공격력 증가량
+//   BPB    Int    @map("BPB") // 방어력 증가량
+//   CPB    Int    @map("CPB") // 캐릭터 보너스
+//   DPB    Int    @map("DPB") // 데미지 보너스
+//   EPB    Int    @map("EPB") // 추가 보너스
+
+//   @@map("packs")
+// }

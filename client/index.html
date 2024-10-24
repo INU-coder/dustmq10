@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Management</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>게임 관리 시스템</h1>
+
+    <!-- 회원가입 섹션 -->
+    <section>
+      <h2>회원가입</h2>
+      <form id="signupForm">
+        <label for="signupEmail">이메일:</label>
+        <input type="email" id="signupEmail" required>
+
+        <label for="signupName">이름:</label>
+        <input type="text" id="signupName" required>
+
+        <label for="signupPassword">비밀번호:</label>
+        <input type="password" id="signupPassword" required>
+
+        <button type="submit">회원가입</button>
+      </form>
+    </section>
+
+    <!-- 로그인 섹션 -->
+    <section>
+      <h2>로그인</h2>
+      <form id="loginForm">
+        <label for="loginEmail">이메일:</label>
+        <input type="email" id="loginEmail" required>
+
+        <label for="loginPassword">비밀번호:</label>
+        <input type="password" id="loginPassword" required>
+
+        <button type="submit">로그인</button>
+      </form>
+    </section>
+
+    <!-- 캐릭터 이미지 표시 -->
+    <div id="characterDisplay" class="hidden">
+      <h3>현재 장착된 캐릭터:</h3>
+      <img id="characterImage" src="./png/default.png" alt="캐릭터 이미지" width="200">
+    </div>
+
+    <!-- 캐릭터 및 아이템 관리 -->
+    <section id="characterManagement" class="hidden">
+      <h2>캐릭터 및 아이템 관리</h2>
+
+      <div id="characterSection">
+        <h3>캐릭터 선택</h3>
+        <select id="characterSelect">
+          <option value="1">Defender</option>
+          <option value="2">Slayer</option>
+          <option value="3">Healer</option>
+          <option value="4">Archer</option>
+        </select>
+        <button id="equipCharacter">캐릭터 장착</button>
+      </div>
+
+      <div id="itemSection">
+        <h3>아이템 장착</h3>
+        <select id="itemSelect">
+          <option value="1">Shield</option>
+          <option value="2">Sword</option>
+          <option value="3">Staff</option>
+          <option value="4">Bow</option>
+        </select>
+        <button id="equipItem">아이템 장착</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+
+</html>
