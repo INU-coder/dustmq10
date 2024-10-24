@@ -16,6 +16,8 @@ model user {
   inventory   Inventory[] 
   players     player[]   // 유저가 여러 플레이어를 가질 수 있음
   createdAt   DateTime   @default(now())
+  rooms       Room[]     @relation("RoomMembers") // 유저가 여러 방에 참여 가능
+  chats       Chat[] 
 
   @@map("users")
 }
@@ -70,7 +72,28 @@ model item {
 
   @@map("items")
 }
+model Room {
+  roomId   Int     @id @default(autoincrement())
+  roomName String
+  roomCode String  @unique  // 고유한 방 코드
+  members  user[]  @relation("RoomMembers") // 방에 있는 사용자들
+  chats    Chat[]  // 방에 있는 채팅 메시지
+  createdAt DateTime @default(now())
 
+  @@map("rooms")
+}
+
+model Chat {
+  chatId   Int     @id @default(autoincrement())
+  message  String
+  user     user    @relation(fields: [userId], references: [userId])
+  userId   Int
+  room     Room    @relation(fields: [roomId], references: [roomId])
+  roomId   Int
+  createdAt DateTime @default(now())
+
+  @@map("chats")
+}
 // model pack {
 //   packId Int    @id @default(autoincrement()) @map("pack_id")
 //   name   String @map("name")
